@@ -7,7 +7,7 @@ This cartridge is for the MegaWiFi project. It consists of a cartridge for the S
 
 This project was initially created for 1985alternativo, but to this day, no brave soul has dared to make an online game using this cart. Will you give it a try?
 
-Have a look to the [github project page](https://github.com/doragasu/mw) for more information.
+Have a look to the [github project page](https://gitlab.com/doragasu/mw) for more information.
 
 ## License
 mw-cart is licensed under the [CERN OHL 1.2](http://www.ohwr.org/licenses/cern-ohl/v1.2) license. You are free to study, distribute and make modifications to the Documentation, under the aforementioned license terms. You are also free to make cartridges derived from the Documentation for non-commercial purposes. If you want to make a commercial Product using this Documentation, please contact me to obtain a licence.
