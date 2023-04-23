@@ -15,6 +15,8 @@ mw-cart is licensed under the [CERN OHL 1.2](http://www.ohwr.org/licenses/cern-o
 ## About CAD files
 Electronic CAD design files are for KiCAD Open Source electronics design suite. Please install latest version along with KiCAD libraries to open the project. When opening schematic, KiCAD will most likely complain about missing library "doragasu". Despite this warning, the schematic should load nicely (using the cached libraries). To avoid this message, install [the missing library](https://github.com/doragasu/doragasu-kicad-lib) and make sure to configure it in the schematic editor.
 
-The files under `gerber` directory are for PCB fabrication. Send them to your favorite PCB fab house.
+## Board fabrication
+
+You can go to [the package registry](https://gitlab.com/doragasu/mw-cart/-/packages) to download artifact packages with the fabrication files, including Gerbers, bill of materials, drawings, CPL file, etc.
 
 Enjoy!

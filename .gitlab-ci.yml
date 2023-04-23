@@ -1,0 +1,51 @@
+variables:
+  ARTIFACT_NAME: "mega_wifi"
+  TARBALL_ARTIFACT: "${ARTIFACT_NAME}_${CI_COMMIT_REF_SLUG}.7z"
+
+stages:
+  - kibot
+  - package
+  - upload
+
+build:
+  stage: kibot
+  only:
+    - tags
+
+  image: ghcr.io/inti-cmnb/kicad7_auto:latest
+
+  script:
+    - kibot
+    - sed -i 's/Kibot\/Browse\/mega-wifi-navigate.html/Browse\/mega-wifi-navigate.html/g' Kibot/index.html
+
+  artifacts:
+    paths:
+      - Kibot
+
+package:
+  stage: package
+  only:
+    - tags
+
+  image: crazymax/7zip:latest
+
+  script:
+    - cd Kibot && 7z a ../${TARBALL_ARTIFACT} *
+
+  artifacts:
+    paths:
+      - ${TARBALL_ARTIFACT}
+
+upload:
+  variables:
+    UPLOAD_BASE: "${ARTIFACT_NAME}_${CI_COMMIT_TAG}"
+    TARBALL_UPLOAD: "$UPLOAD_BASE.7z"
+
+  stage: upload
+  only:
+    - tags
+
+  image: curlimages/curl:latest
+
+  script:
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $TARBALL_ARTIFACT "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/$UPLOAD_BASE/$CI_COMMIT_TAG/$TARBALL_UPLOAD"'
