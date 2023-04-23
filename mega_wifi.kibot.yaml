@@ -15,6 +15,11 @@ import:
 - file: MacroFab_XYRS
 - file: PCBWay
 
+variants:
+  - name: 'default'
+    comment: 'Standard PCB configuration'
+    type: kibom
+
 outputs:
 - name: basic_boardview
   comment: Kibot/Doc/Board View export

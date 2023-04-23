@@ -1120,7 +1120,7 @@
         (effects (font (size 1.016 1.016) (thickness 0.2032)))
       (tstamp c56e72eb-5239-428a-a8a2-f29116b6d84f)
     )
-    (fp_text value "2N7002" (at 0 2.3 270) (layer "F.SilkS") hide
+    (fp_text value "2N7002" (at 0 2.3 90) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp b1815e41-ff1f-4467-a68e-0f7afe26c9c2)
     )
@@ -1140,11 +1140,6 @@
       (net 2 "GND") (tstamp 8c00c70f-c5e0-4af6-b990-068b28830ee8))
     (pad "3" smd rect (at 0 -1.05664 270) (size 0.59944 1.00076) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 47 "Net-(Q1-Pad3)") (tstamp d675788f-56bb-4791-803d-1674d574b3e6))
-    (model "TO_SOT_Packages_SMD.3dshapes/SOT-23.wrl"
-      (offset (xyz 0 0 0))
-      (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 0))
-    )
     (model "${KISYS3DMOD}/Package_TO_SOT_SMD.3dshapes/SOT-23.step"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
@@ -2164,8 +2159,8 @@
       (net 45 "/WiFi/W_RX") (tstamp 95e1883f-4168-41be-bd0b-ddc0288f6923))
     (pad "22" smd oval (at 16 0) (size 2.4 1.1) (layers "F.Cu" "F.Paste" "F.Mask")
       (net 46 "/WiFi/W_TX") (tstamp 220ee233-1be9-44ea-b24b-a57dfdc87994))
-    (model "/home/jalon/src/github/kicad/lib/kicad-ESP8266/ESP8266.3dshapes/ESP-12-E-better.step"
-      (offset (xyz 1.016 0 0))
+    (model "${KICAD6_3DMODEL_DIR}/RF_Module.3dshapes/ESP-12E.wrl"
+      (offset (xyz 8.001 -3.4925 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
     )

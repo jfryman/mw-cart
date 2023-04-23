@@ -15,7 +15,7 @@ build:
   image: ghcr.io/inti-cmnb/kicad7_auto:latest
 
   script:
-    - kibot
+    - kibot -g variant=default
     - sed -i 's/Kibot\/Browse\/mega-wifi-navigate.html/Browse\/mega-wifi-navigate.html/g' Kibot/index.html
 
   artifacts:
