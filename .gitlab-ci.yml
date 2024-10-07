@@ -12,7 +12,7 @@ build:
   only:
     - tags
 
-  image: ghcr.io/inti-cmnb/kicad7_auto:latest
+  image: ghcr.io/inti-cmnb/kicad8_auto:latest
 
   script:
     - kibot -g variant=default
