@@ -3290,6 +3290,12 @@
 		)
 	)
 	(junction
+		(at 209.55 106.68)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "18312dba-7688-4c6a-8c26-8f4b4c40cd07")
+	)
+	(junction
 		(at 185.42 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3312,12 +3318,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5af7220e-7d32-4bfe-8942-922b08803815")
-	)
-	(junction
-		(at 209.55 106.68)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5b7622fa-9abf-450b-b3a5-fa53439ff015")
 	)
 	(junction
 		(at 246.38 102.87)
@@ -4347,9 +4347,9 @@
 		)
 		(uuid "fe6a7dd0-9f16-4595-bb0d-5ff6f00c2bf7")
 	)
-	(text "ESP32-C3 strapping pins:\n=====================\n\nGPIO2: Must be always pulled up\nGPIO8: ROM message printing. Must be 1 for \"Joint Download Boot\"\nGPIO9: 1: SPI boot, 0: \"Joint Download Boot\""
+	(text "ESP32-C3 strapping pins:\n================\nGPIO2: Must be always pulled up\nGPIO8: ROM message printing. Must be 1 for \"Joint Download Boot\"\nGPIO9: 1: SPI boot, 0: \"Joint Download Boot\"\n\nBoot sequences:\n==========\n* Normal (SPI) boot: clear ~{DTR}, set ~{RTS}, set ~{DTR}\n* Joint download boot: clear ~{DTR}, clear ~{RTS}, set ~{DTR}"
 		(exclude_from_sim no)
-		(at 16.51 195.58 0)
+		(at 13.97 196.596 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5169,177 +5169,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 180.34 125.73 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000056233843")
-		(property "Reference" "R10"
-			(at 181.61 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "220"
-			(at 180.34 125.73 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 178.562 125.73 90)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 180.34 125.73 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 180.34 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Config" "DNF"
-			(at 180.34 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC#" "C22962"
-			(at 180.34 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "e5065020-f595-4b78-afb3-d953f396b638")
-		)
-		(pin "2"
-			(uuid "32bd44db-67c4-43f2-a01d-2d5279cebc7e")
-		)
-		(instances
-			(project "mega-wifi"
-				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
-					(reference "R10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:LED")
-		(at 180.34 133.35 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-0000562339b0")
-		(property "Reference" "D1"
-			(at 182.245 132.715 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "KT-0603R"
-			(at 182.245 134.62 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
-			(at 180.34 133.35 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 180.34 133.35 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 180.34 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Config" "DNF"
-			(at 180.34 133.35 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC#" "C2286"
-			(at 180.34 133.35 90)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8206424f-ef12-473d-a99a-295863c209d2")
-		)
-		(pin "2"
-			(uuid "15d6e47d-91f4-4b6a-8628-98740709bd0b")
-		)
-		(instances
-			(project "mega-wifi"
-				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
-					(reference "D1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:Q_NMOS_GSD")
 		(at 44.45 113.03 0)
 		(unit 1)
@@ -5913,87 +5742,153 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C")
-		(at 209.55 110.49 0)
-		(mirror y)
+		(lib_id "Device:R")
+		(at 227.33 72.39 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "0c19d913-042f-4ba0-96b7-a1db20386e4b")
-		(property "Reference" "C17"
-			(at 208.915 107.95 0)
+		(uuid "08589545-e6e4-48c1-a4b8-173aa2e2927c")
+		(property "Reference" "R16"
+			(at 227.33 74.676 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Value" "1u"
-			(at 208.915 113.03 0)
+		(property "Value" "5k1"
+			(at 227.33 72.39 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 208.5848 114.3 0)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 227.33 74.168 90)
 			(effects
 				(font
-					(size 0.762 0.762)
+					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
-			(at 209.55 110.49 0)
+		(property "Datasheet" "~"
+			(at 227.33 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 227.33 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C25905"
+			(at 227.33 72.39 90)
 			(effects
 				(font
 					(size 1.524 1.524)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 209.55 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC#" "C28323"
-			(at 209.55 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Config" "DNF"
-			(at 209.55 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
 		)
 		(pin "1"
-			(uuid "9caa2a72-ad5c-4dd6-b16d-f240b582b266")
+			(uuid "6c2edaec-9aa4-4b47-aba1-b78d620a4602")
 		)
 		(pin "2"
-			(uuid "f7892f71-35a1-4a88-9a44-0071af8e8677")
+			(uuid "f3fe22d5-3a2d-4046-beed-97abdb83f280")
 		)
 		(instances
 			(project "mega-wifi"
 				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
-					(reference "C17")
+					(reference "R16")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 186.69 95.25 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0a58e9c0-76d4-4374-9d1f-1a30f700b1f7")
+		(property "Reference" "R12"
+			(at 189.484 94.234 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "2k2"
+			(at 186.69 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 186.69 97.028 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 186.69 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 186.69 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C4177"
+			(at 186.69 95.25 90)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "cc5b5609-30d9-496d-a97c-c89ec8a43b67")
+		)
+		(pin "2"
+			(uuid "b8a0255d-a461-432a-b395-2ea38a78d7ef")
+		)
+		(instances
+			(project "mega-wifi"
+				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
+					(reference "R12")
 					(unit 1)
 				)
 			)
@@ -6235,6 +6130,83 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C")
+		(at 203.2 110.49 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1b4a6b8f-d2d4-4912-b251-c02f337da640")
+		(property "Reference" "C16"
+			(at 203.708 112.522 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 203.708 114.554 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 204.1652 114.3 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 203.2 110.49 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 203.2 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C28323"
+			(at 203.2 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c5641f17-eafc-4dbc-933e-02a8f49c1a5b")
+		)
+		(pin "2"
+			(uuid "5d1ec26c-1459-4e02-b800-3c20c3095570")
+		)
+		(instances
+			(project "mega-wifi"
+				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
+					(reference "C16")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:VCC")
 		(at 220.98 88.9 0)
 		(unit 1)
@@ -6292,93 +6264,6 @@
 			(project "mega-wifi"
 				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
 					(reference "#PWR038")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C")
-		(at 203.2 110.49 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "4ccfd6f5-b1f1-4da8-bd9a-d5bcf3b9fbaa")
-		(property "Reference" "C16"
-			(at 202.565 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1u"
-			(at 202.565 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 202.2348 114.3 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 203.2 110.49 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 203.2 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC#" "C28323"
-			(at 203.2 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Config" "DNF"
-			(at 203.2 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "fbecfc8b-1b9d-460c-bb91-ae403b167ce9")
-		)
-		(pin "2"
-			(uuid "1bdf4a05-b824-4626-91aa-b3c5f2f4b168")
-		)
-		(instances
-			(project "mega-wifi"
-				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
-					(reference "C16")
 					(unit 1)
 				)
 			)
@@ -6529,6 +6414,83 @@
 			(project ""
 				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
 					(reference "TP1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 209.55 110.49 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5df37d6d-2cd1-46ed-9d2e-bd75d6a777cb")
+		(property "Reference" "C17"
+			(at 210.058 112.776 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1u"
+			(at 210.058 114.808 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 210.5152 114.3 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 209.55 110.49 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 209.55 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C28323"
+			(at 209.55 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "82835415-2b2a-42e6-ad8d-b267839eae55")
+		)
+		(pin "2"
+			(uuid "3efae57e-b988-419f-aa09-4b489310098e")
+		)
+		(instances
+			(project "mega-wifi"
+				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
+					(reference "C17")
 					(unit 1)
 				)
 			)
@@ -6804,91 +6766,6 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 227.33 69.85 270)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "804fd696-3242-42e3-8728-aa1c248ca989")
-		(property "Reference" "R15"
-			(at 227.33 67.31 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "5k1"
-			(at 227.33 69.85 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 227.33 71.628 90)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 227.33 69.85 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 227.33 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Config" "DNF"
-			(at 227.33 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC#" "C25905"
-			(at 227.33 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "b93b80b0-4a39-4376-81ba-6e9efe652eb1")
-		)
-		(pin "2"
-			(uuid "f485affc-f736-4415-9707-a7a8a72d7723")
-		)
-		(instances
-			(project "mega-wifi"
-				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
-					(reference "R15")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
 		(at 217.17 90.17 270)
 		(unit 1)
 		(exclude_from_sim no)
@@ -6964,25 +6841,24 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 186.69 95.25 270)
-		(mirror x)
+		(at 186.69 92.71 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "970085ce-c2a4-4633-9e33-45040966ba9a")
-		(property "Reference" "R12"
-			(at 189.865 93.98 90)
+		(uuid "a49de4c0-02cf-4b89-b240-ad44e3c6d31b")
+		(property "Reference" "R11"
+			(at 189.484 91.694 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Value" "2k2"
-			(at 186.69 95.25 90)
+			(at 186.69 92.71 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6990,24 +6866,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 186.69 97.028 90)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 186.69 95.25 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 186.69 95.25 0)
+			(at 186.69 94.488 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7015,8 +6874,17 @@
 				(hide yes)
 			)
 		)
-		(property "Config" "DNF"
-			(at 186.69 95.25 0)
+		(property "Datasheet" "~"
+			(at 186.69 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 186.69 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7025,7 +6893,7 @@
 			)
 		)
 		(property "LCSC#" "C4177"
-			(at 186.69 95.25 90)
+			(at 186.69 92.71 90)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -7034,15 +6902,15 @@
 			)
 		)
 		(pin "1"
-			(uuid "c8c45422-e734-4881-8381-61541f9621ba")
+			(uuid "79ef83f7-2281-4f27-acaa-45f1649cacfe")
 		)
 		(pin "2"
-			(uuid "ecd50c2b-bc66-459b-89b3-f81fe5ae953e")
+			(uuid "552c843f-31e9-4fa3-9e61-5116c002e300")
 		)
 		(instances
-			(project "mega-wifi"
+			(project ""
 				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
-					(reference "R12")
+					(reference "R11")
 					(unit 1)
 				)
 			)
@@ -7372,6 +7240,82 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 227.33 69.85 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b724a06a-c1a6-45e8-a9ec-05fc4f4af26f")
+		(property "Reference" "R15"
+			(at 227.33 67.818 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "5k1"
+			(at 227.33 69.85 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 227.33 71.628 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 227.33 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 227.33 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C25905"
+			(at 227.33 69.85 90)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d74933b3-7328-484a-8ca3-438f90923056")
+		)
+		(pin "2"
+			(uuid "6e237705-4c0d-4432-8328-db08145a2b1d")
+		)
+		(instances
+			(project ""
+				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
+					(reference "R15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:USB_C_Receptacle_USB2.0_16P")
 		(at 246.38 80.01 0)
 		(mirror y)
@@ -7489,6 +7433,83 @@
 			(project ""
 				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
 					(reference "P2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 180.34 125.73 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c7dd98d3-e242-4595-83ca-8feefb2f5c03")
+		(property "Reference" "R10"
+			(at 181.61 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220"
+			(at 180.34 125.73 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 178.562 125.73 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 180.34 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 180.34 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C22962"
+			(at 180.34 125.73 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "80534be4-520f-49cb-8111-cdabfec745d9")
+		)
+		(pin "2"
+			(uuid "46f24eee-6ee6-4b74-9875-2c4bd301c070")
+		)
+		(instances
+			(project ""
+				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
+					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -7625,51 +7646,35 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 186.69 92.71 270)
-		(mirror x)
+		(lib_id "Device:LED")
+		(at 180.34 133.35 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "d188207d-f194-4025-b972-dd60af5e14a9")
-		(property "Reference" "R11"
-			(at 189.865 91.44 90)
+		(fields_autoplaced yes)
+		(uuid "dca4cd47-4060-4e57-b918-0e8520c05983")
+		(property "Reference" "D1"
+			(at 184.15 133.6674 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
-		(property "Value" "2k2"
-			(at 186.69 92.71 90)
+		(property "Value" "KT-0603R"
+			(at 184.15 136.2074 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 186.69 94.488 90)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 186.69 92.71 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 186.69 92.71 0)
+		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
+			(at 180.34 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7677,8 +7682,8 @@
 				(hide yes)
 			)
 		)
-		(property "Config" "DNF"
-			(at 186.69 92.71 0)
+		(property "Datasheet" "~"
+			(at 180.34 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7686,8 +7691,17 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C4177"
-			(at 186.69 92.71 90)
+		(property "Description" "Light emitting diode"
+			(at 180.34 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C2286"
+			(at 180.34 133.35 90)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -7695,16 +7709,16 @@
 				(hide yes)
 			)
 		)
-		(pin "1"
-			(uuid "f1d71573-5d9f-455d-bfcf-18c3942ad7c1")
-		)
 		(pin "2"
-			(uuid "d0929760-00c1-41cd-976e-2f483a695124")
+			(uuid "fd46427a-88ed-4710-a27a-7b1f0b67375f")
+		)
+		(pin "1"
+			(uuid "6e8a5c1e-4bdd-4fed-b724-bb4d679bf010")
 		)
 		(instances
-			(project "mega-wifi"
+			(project ""
 				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
-					(reference "R11")
+					(reference "D1")
 					(unit 1)
 				)
 			)
@@ -7908,91 +7922,6 @@
 			(project "mega-wifi"
 				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
 					(reference "R13")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 227.33 72.39 270)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "f5df1d92-8df4-4fef-8c88-a6b8342b27fb")
-		(property "Reference" "R16"
-			(at 227.33 74.93 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "5k1"
-			(at 227.33 72.39 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 227.33 74.168 90)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 227.33 72.39 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 227.33 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Config" "DNF"
-			(at 227.33 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC#" "C25905"
-			(at 227.33 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "62a45df8-1363-4197-b228-6e8e4dfdae2b")
-		)
-		(pin "2"
-			(uuid "16dda028-1c0f-4055-afdd-046254c7b8d5")
-		)
-		(instances
-			(project "mega-wifi"
-				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
-					(reference "R16")
 					(unit 1)
 				)
 			)

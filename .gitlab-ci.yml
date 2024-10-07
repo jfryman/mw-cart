@@ -15,6 +15,8 @@ build:
   image: ghcr.io/inti-cmnb/kicad8_auto:latest
 
   script:
+    - git clone --depth=1 https://github.com/espressif/kicad-libraries.git
+    - sed -i 's/\${KICAD8_3RD_PARTY}\/3dmodels\/com_github_espressif_kicad-libraries\/espressif\.3dshapes\/ESP32-C3-WROOM-02\.STEP/kicad-libraries\/3dmodels\/espressif\.3dshapes\/ESP32-C3-WROOM-02\.STEP/g' mega-wifi.kicad_pcb
     - kibot -g variant=default
     - sed -i 's/Kibot\/Browse\/mega-wifi-navigate.html/Browse\/mega-wifi-navigate.html/g' Kibot/index.html
 

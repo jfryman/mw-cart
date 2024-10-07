@@ -2448,7 +2448,7 @@
 				)
 			)
 		)
-		(property "Footprint" "doragasu:TSOP48SP"
+		(property "Footprint" "Package_SO:TSOP-I-48_18.4x12mm_P0.5mm"
 			(at 156.21 59.69 0)
 			(effects
 				(font

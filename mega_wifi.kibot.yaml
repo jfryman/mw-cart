@@ -421,9 +421,10 @@ outputs:
   output_id: 30deg
   options:
     solder_mask: "#023BA2D4"
-    width: 1920
-    height: 1080
-    zoom: 6
+    clip_silk_on_via_annulus: false
+    width: 3840
+    height: 2160
+    zoom: 1
     ray_tracing: true
     rotate_x: 3
     rotate_z: 2
