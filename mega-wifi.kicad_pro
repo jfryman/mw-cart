@@ -62,7 +62,8 @@
         "hole_clearance|165225000|86303000|520fe8f9-266a-4e30-9c79-a69ee958991c|04cd5b17-9dfb-491c-9cec-dad0879adda0",
         "hole_clearance|165225000|86303000|a021fe6a-4ed8-4e1e-bd1f-b0e8297cb379|04cd5b17-9dfb-491c-9cec-dad0879adda0",
         "hole_clearance|171325000|86303000|1ade7926-4829-4c20-bfef-2889f2932d4e|74c847a7-4902-42f6-8f5d-986f7f16bb41",
-        "hole_clearance|171325000|86303000|ed12609e-2210-48a8-aeac-472880b5df46|74c847a7-4902-42f6-8f5d-986f7f16bb41"
+        "hole_clearance|171325000|86303000|ed12609e-2210-48a8-aeac-472880b5df46|74c847a7-4902-42f6-8f5d-986f7f16bb41",
+        "lib_footprint_mismatch|155575000|84709000|9085ed26-3425-48f9-831c-06de227a1161|00000000-0000-0000-0000-000000000000"
       ],
       "meta": {
         "filename": "board_design_settings.json",
@@ -82,7 +83,7 @@
         "extra_footprint": "warning",
         "footprint": "error",
         "footprint_symbol_mismatch": "warning",
-        "footprint_type_mismatch": "warning",
+        "footprint_type_mismatch": "ignore",
         "hole_clearance": "error",
         "hole_near_hole": "error",
         "holes_co_located": "warning",
@@ -91,7 +92,7 @@
         "item_on_disabled_layer": "error",
         "items_not_allowed": "error",
         "length_out_of_range": "error",
-        "lib_footprint_issues": "warning",
+        "lib_footprint_issues": "ignore",
         "lib_footprint_mismatch": "warning",
         "malformed_courtyard": "error",
         "microvia_drill_out_of_range": "error",
