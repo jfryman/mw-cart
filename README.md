@@ -3,14 +3,30 @@ MegaWiFi Cartridge
 
 ![mw-cart](/mw-cart.jpg)
 
-This cartridge is for the MegaWiFi project. It consists of a cartridge for the SEGA Genesis/Megadrive console, along with a WiFi interface, allowing brave programmers to implement games with online gaming, leaderboards, evil DLCs, etc.
+This is the cartridge for the MegaWiFi project. It consists of a cartridge for the SEGA Genesis/Megadrive console, along with a WiFi interface, allowing brave programmers to implement games with online gaming, leaderboards, evil DLCs, etc.
 
-This project was initially created for 1985alternativo, but to this day, no brave soul has dared to make an online game using this cart. Will you give it a try?
+This project was initially created for 1985alternativo, and to this day, as far as I know, only 1985 WorldCup game has used it to implement online play. Will you give it a try?
 
 Have a look to the [github project page](https://gitlab.com/doragasu/mw) for more information.
 
+## Cartridge specs
+
+The current cartridge is based on an ESP32-C3 WiFi microcontroller, that has a good specs/price tradeoff. But bear in mind that if needed, it would be easy swapping it for other more powerful ESP32 chip, like for example the ESP32-S3. The current specs are:
+
+* Up to 64 megabits (8 MiB) of flat ROM (no mapper needed!).
+* Fast ESP32 to m68k UART bridge (1.5 Mbps baud rate with hardware flow control).
+* 32-bit RISC-V CPU running at 160 MHz. Can be upgraded to dual core up to 240 MHz if needed.
+* Additional 16 megabits (2 MiB) available of readable/writable memory (managed by the ESP32 and accessed through the UART bridge, could be upgraded to up to 14 MiB if needed!).
+* 400 KiB of SRAM managed by the ESP32.
+* 802.11bgn Wi-Fi (2.4 GHz band) with WPA3 support.
+* Bluetooth Low Energy (BLE) support.
+* USB port for ESP32 programming and debugging. Can be upgraded to work as general purpose USB host/device port.
+* Connection to the cart audio input, so the chip could be used to produce additional sound (though there is no software support for this yet).
+
+**Note**: The cartridge slashes the the usual 32 megabits maximum of ROM space by implementing a hack: it unmaps the MegaCD and uses its address space. This has the drawback that you cannot access the MegaCD when the hack is enabled. If you need to access the MegaCD, the hack can be disabled, but then the cart is limited to the usual 32 megabits of ROM.
+
 ## License
-mw-cart is licensed under the [CERN OHL 1.2](http://www.ohwr.org/licenses/cern-ohl/v1.2) license. You are free to study, distribute and make modifications to the Documentation, under the aforementioned license terms. You are also free to make cartridges derived from the Documentation for non-commercial purposes. If you want to make a commercial Product using this Documentation, please contact me to obtain a licence.
+mw-cart is licensed under the [CERN OHL 1.2](http://www.ohwr.org/licenses/cern-ohl/v1.2) license. You are free to study, distribute and make modifications to the Documentation, under the aforementioned license terms.
 
 ## About CAD files
 Electronic CAD design files are for KiCAD Open Source electronics design suite. Please install latest version along with KiCAD libraries to open the project. When opening schematic, KiCAD will most likely complain about missing library "doragasu". Despite this warning, the schematic should load nicely (using the cached libraries). To avoid this message, install [the missing library](https://github.com/doragasu/doragasu-kicad-lib) and make sure to configure it in the schematic editor.
