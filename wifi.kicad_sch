@@ -6,10 +6,11 @@
 	(paper "A4")
 	(title_block
 		(title "MegaWiFi")
-		(date "2024-10-07")
-		(rev "B")
-		(company "doragasu")
+		(date "2026-10-06")
+		(rev "C")
+		(company "doragasu, jfryman")
 		(comment 1 "License: CERN OHL 1.2")
+		(comment 2 "Rev.C: TL16C550D UART, 20 MHz clock")
 		(comment 4 "UART & WIFI")
 	)
 	(lib_symbols
@@ -2294,7 +2295,7 @@
 				)
 			)
 		)
-		(symbol "doragasu:SC16C550BIBS"
+		(symbol "mw-cart:TL16C550DRHB"
 			(pin_names
 				(offset 1.016)
 			)
@@ -2309,7 +2310,7 @@
 					)
 				)
 			)
-			(property "Value" "SC16C550BIBS"
+			(property "Value" "TL16C550DRHB"
 				(at 11.43 -26.67 0)
 				(effects
 					(font
@@ -2317,7 +2318,7 @@
 					)
 				)
 			)
-			(property "Footprint" "Package_DFN_QFN:HVQFN-32-1EP_5x5mm_P0.5mm_EP3.1x3.1mm"
+			(property "Footprint" "Package_DFN_QFN:Texas_RHB0032E_VQFN-32-1EP_5x5mm_P0.5mm_EP3.45x3.45mm"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2326,7 +2327,7 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" "https://www.nxp.com/docs/en/data-sheet/SC16C550B.pdf"
+			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tl16c550d.pdf"
 				(at 0.762 -2.54 0)
 				(effects
 					(font
@@ -2335,7 +2336,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Parallel to UART"
+			(property "Description" "UART (ACE) with 16-byte FIFOs and autoflow control, VQFN-32 RHB"
 				(at 0 -15.24 0)
 				(effects
 					(font
@@ -2344,7 +2345,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "SC16C550BIBS_1_1"
+			(symbol "TL16C550DRHB_1_1"
 				(rectangle
 					(start -12.7 25.4)
 					(end 12.7 -25.4)
@@ -2377,7 +2378,7 @@
 				(pin input line
 					(at 17.78 -17.78 180)
 					(length 5.08)
-					(name "XTAL1"
+					(name "XIN"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2395,7 +2396,7 @@
 				(pin output line
 					(at 17.78 -22.86 180)
 					(length 5.08)
-					(name "XTAL2"
+					(name "XOUT"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2413,7 +2414,7 @@
 				(pin input line
 					(at -17.78 -12.7 0)
 					(length 5.08)
-					(name "~{IOW}"
+					(name "~{WR1}"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2449,7 +2450,7 @@
 				(pin input line
 					(at -17.78 -10.16 0)
 					(length 5.08)
-					(name "~{IOR}"
+					(name "~{RD1}"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2575,7 +2576,7 @@
 				(pin output line
 					(at -17.78 -20.32 0)
 					(length 5.08)
-					(name "INT"
+					(name "INTRPT"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2629,7 +2630,7 @@
 				(pin input line
 					(at -17.78 -22.86 0)
 					(length 5.08)
-					(name "RESET"
+					(name "MR"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2881,7 +2882,7 @@
 				(pin input line
 					(at 17.78 17.78 180)
 					(length 5.08)
-					(name "RX"
+					(name "SIN"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2899,7 +2900,7 @@
 				(pin output line
 					(at 17.78 20.32 180)
 					(length 5.08)
-					(name "TX"
+					(name "SOUT"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2917,7 +2918,7 @@
 				(pin input line
 					(at -17.78 -15.24 0)
 					(length 5.08)
-					(name "~{CS}"
+					(name "~{CS2}"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2932,10 +2933,10 @@
 						)
 					)
 				)
-				(pin power_in line
+				(pin passive line
 					(at -2.54 -30.48 90)
 					(length 5.08)
-					(name "VSS"
+					(name "NC"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3420,10 +3421,6 @@
 	(no_connect
 		(at 231.14 95.25)
 		(uuid "a8d7e916-fb63-4460-8b28-f134f5dc947e")
-	)
-	(no_connect
-		(at 99.06 87.63)
-		(uuid "dfcd12af-bd81-4ce4-944c-8dc222e5e8e5")
 	)
 	(wire
 		(pts
@@ -6152,7 +6149,7 @@
 		)
 	)
 	(symbol
-		(lib_id "doragasu:SC16C550BIBS")
+		(lib_id "mw-cart:TL16C550DRHB")
 		(at 81.28 85.09 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -6170,7 +6167,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "SC16C550BIBS"
+		(property "Value" "TL16C550DRHB"
 			(at 83.4741 57.15 0)
 			(effects
 				(font
@@ -6179,7 +6176,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DFN_QFN:HVQFN-32-1EP_5x5mm_P0.5mm_EP3.1x3.1mm"
+		(property "Footprint" "Package_DFN_QFN:Texas_RHB0032E_VQFN-32-1EP_5x5mm_P0.5mm_EP3.45x3.45mm"
 			(at 81.28 100.33 0)
 			(effects
 				(font
@@ -6188,7 +6185,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.nxp.com/docs/en/data-sheet/SC16C550B.pdf"
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tl16c550d.pdf"
 			(at 81.28 100.33 0)
 			(effects
 				(font
@@ -6197,7 +6194,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Parallel to UART"
+		(property "Description" "UART (ACE) with 16-byte FIFOs and autoflow control, VQFN-32 RHB"
 			(at 81.28 100.33 0)
 			(effects
 				(font
@@ -6206,7 +6203,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C3310482"
+		(property "LCSC#" "C2653239"
+			(at 81.28 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "manf#" "TL16C550DRHBR"
 			(at 81.28 85.09 0)
 			(effects
 				(font
@@ -6563,15 +6569,15 @@
 		(dnp no)
 		(uuid "4ed3e986-f2e1-4529-ad59-2757e9fb034e")
 		(property "Reference" "Y1"
-			(at 102.87 99.06 90)
+			(at 102.87 96.52 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "24 MHz"
-			(at 102.87 101.6 90)
+		(property "Value" "20 MHz"
+			(at 102.87 99.06 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6605,11 +6611,20 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C2901723"
+		(property "LCSC#" "C252261"
 			(at 102.87 105.41 90)
 			(effects
 				(font
 					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(property "manf#" "7E20000E12UCG"
+			(at 102.87 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
@@ -8206,5 +8221,231 @@
 				)
 			)
 		)
+	)
+	(wire
+		(pts
+			(xy 99.06 87.63) (xy 101.6 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e103945-1386-4d4f-a1ca-882fe6b98f85")
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 101.6 87.63 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b1ffad95-6c64-4cf6-9e60-ba36a6574f9d")
+		(property "Reference" "#PWR041"
+			(at 105.41 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 105.41 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 101.6 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 101.6 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 101.6 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "83de495d-2a38-4a02-bd3d-b80a4b39b87b")
+		)
+		(instances
+			(project "mega-wifi"
+				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
+					(reference "#PWR041")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "XIN"
+		(at 99.06 102.87 0)
+		(effects
+			(font
+				(size 1.524 1.524)
+			)
+			(justify left bottom)
+		)
+		(uuid "a7520b5a-ddc1-4748-8d0c-7e83a4847267")
+	)
+	(wire
+		(pts
+			(xy 107.95 121.92) (xy 110.49 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5f6efe6e-f3bf-49d7-885a-22553706ad8f")
+	)
+	(label "XIN"
+		(at 110.49 121.92 0)
+		(effects
+			(font
+				(size 1.524 1.524)
+			)
+			(justify left bottom)
+		)
+		(uuid "ddbf9a8f-2ec0-4974-a9af-36706b6009fb")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 104.14 121.92 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d281a6c2-2782-45bf-8766-94b6809bb0bc")
+		(property "Reference" "R18"
+			(at 104.14 119.38 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1M"
+			(at 104.14 124.46 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 104.14 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 104.14 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "TL16C550D oscillator feedback resistor (Rp)"
+			(at 104.14 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C26083"
+			(at 104.14 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "manf#" "0402WGF1004TCE"
+			(at 104.14 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e28c2c74-2d1c-424e-8a77-440422e7da8c")
+		)
+		(pin "2"
+			(uuid "511f4db3-fe22-4f73-90b1-3531201f57cb")
+		)
+		(instances
+			(project "mega-wifi"
+				(path "/8beda605-69f4-4c50-a2e5-833bea0e207c/00000000-0000-0000-0000-00005619415c"
+					(reference "R18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 99.06 107.95) (xy 99.06 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9634357c-5be1-4893-aacd-0f8c4642f2cc")
+	)
+	(wire
+		(pts
+			(xy 99.06 121.92) (xy 100.33 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "40b67140-e5fc-498d-b320-e9b9a3de1e71")
+	)
+	(junction
+		(at 99.06 107.95)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a0e62295-ffbe-481c-ba4e-a45d6b2245f6")
+	)
+	(label "XOUT"
+		(at 99.06 118.11 0)
+		(effects
+			(font
+				(size 1.524 1.524)
+			)
+			(justify left bottom)
+		)
+		(uuid "dada0401-806b-4551-b534-43c2e2977e5f")
 	)
 )
