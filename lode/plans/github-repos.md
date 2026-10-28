@@ -38,7 +38,7 @@ workspace's top-level `Fab/`, which is Rev.B.
 - Release assets must come from the tagged sources. The KiCad files on `main` are unchanged since
   `0f4f06a`, which `build/rev-c/` was generated from.
 - CERN OHL 1.2 §4: the modified docs must carry a notice of the change and its date. The title blocks
-  already do; the README gets a Rev.C section. GPLv3 (firmware): the binary release sits next to the
+  already do, and the README has a Rev.C section. GPLv3 (firmware): the binary release sits next to the
   commit that built it.
 - Git-ignored: `lode/tmp/`, `.history/`, `~*.lck`, `tools/ext/`, bring-up build artefacts, `.DS_Store`.
 
