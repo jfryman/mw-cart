@@ -1,0 +1,25 @@
+# Terminology
+
+- MegaWiFi / mw - doragasu's Wi-Fi cartridge platform for the Mega Drive (hardware, firmware, 68k API)
+- mw-cart - KiCad hardware repo for the cartridge (gitlab.com/doragasu/mw-cart)
+- mw-fw-rtos - ESP32 firmware ("WiFi module firmware"); UART config lives in `main/lsd.h`/`lsd.c`
+- mw-api / SGDK `ext/mw` - 68000-side MegaWiFi API; contains the `16c550.h` UART driver
+- mw-wflash - wireless flash loader ROM; ships its own copy of `16c550.h`
+- LSD - "Local Symmetric Data-link", the framed protocol mw runs over the UART
+- ACE - TI's name for a 16550-style UART ("Asynchronous Communications Element")
+- U7 - the parallel-to-UART bridge on the cart (was SC16C550BIBS, now TL16C550DRHB on branch)
+- U8 - ESP32-C3-WROOM-02 module
+- U6 - S29GL064N 64 Mbit parallel NOR flash (game ROM)
+- U3/U5 - 74LVC16245 level-shifting bus transceivers (5 V cart bus ↔ 3.3 V)
+- U4 - 74LVC245 address/control buffer; U1 - 74LVC08 glue logic
+- ~TIME / ~C_TIME - cart-edge strobe for the $A130xx region; drives U7 chip select directly
+- AFE - Auto Flow Enable, MCR bit 5; with MCR bit 1 enables auto-RTS/CTS on 16550D-class parts
+- Rp - crystal oscillator bias/feedback resistor across XIN–XOUT (R18, 1 MΩ)
+- EP / pad 33 - QFN exposed thermal pad, tied to GND
+- RHB / RHB0032E - TI 5×5 mm 32-pin VQFN package code (EP 3.45 mm)
+- HVQFN32 / SOT617-1 - NXP 5×5 mm 32-pin package (EP 3.1 mm footprint in KiCad)
+- KiBot - CI tool that turns the KiCad project into the `Browse/ Doc/ Fab/` output tree
+- LCSC# / manf# - BOM fields: JLCPCB/LCSC part code and manufacturer part number
+- Basic / Extended part - JLCPCB assembly library tiers (extended = setup fee per part type)
+- Global Sourcing - JLCPCB parts manager route for parts JLC doesn't stock
+- kc - `tools/kc`, wrapper running `kicad-cli` from the KiCad flatpak

@@ -1,6 +1,43 @@
 # mw-cart
 MegaWiFi Cartridge
 
+> **This is the MegaWiFi Rev.C fork** of [doragasu/mw-cart](https://gitlab.com/doragasu/mw-cart).
+> Everything below the "Rev.C" section is doragasu's original README.
+
+## Rev.C (this fork)
+
+**What changed (2026-10-06, jfryman):** the NXP **SC16C550BIBS** UART (U7) is out of stock
+everywhere, so Rev.C replaces it with the pin-compatible **TI TL16C550DRHB** (VQFN-32, RHB):
+
+| | Rev.B (upstream) | Rev.C |
+|---|---|---|
+| U7 UART | NXP SC16C550BIBS | TI TL16C550DRHB (LCSC C2653239) |
+| Y1 crystal | 24 MHz | **20 MHz** (C252261) + R18 1 MΩ bias resistor |
+| Cart ↔ ESP32 link | 1.5 Mbaud | **1.25 Mbaud** |
+| RI pin | NC | tied to VCC |
+
+The TI part is rated to 20 MHz at 3.3 V, so the UART link runs at 1.25 Mbaud. **Rev.C is not
+compatible with existing MegaWiFi ROMs or firmware**: ROMs need `UART_CLK` 20 MHz in their
+`16c550.h`, and the ESP32 needs the Rev.C firmware from
+[jfryman/mw-fw-rtos](https://github.com/jfryman/mw-fw-rtos/releases). Title blocks and silkscreen
+are marked Rev.C.
+
+**Status:** 10 boards assembled by JLCPCB (2026-10). The first board passes the full bring-up
+suite at 1.25 Mbaud, including the flat 8 MiB ROM map with a Mega-CD and 32X attached.
+
+**In this repo, beyond upstream:**
+- `bringup-rom/`: a standalone 68000 test ROM for new boards (UART, crystal, ESP32 link,
+  flash address lines, the 8 MiB map), plus a MAME simulation and FlashKit MD helper scripts.
+- `tools/`: kicad-cli build wrapper and the KiCad s-expression helpers used for the U7 swap.
+  `tools/fetch-ext.sh` fetches the Espressif 3D models.
+- `lode/`: design notes, decisions and bench results.
+
+**Downloads** ([releases](https://github.com/jfryman/mw-cart/releases)): JLCPCB Gerber zip,
+BOM and CPL, schematic and fab PDFs, and the bring-up ROM. Upstream's own Rev.B outputs are on
+[GitLab](https://gitlab.com/doragasu/mw-cart). Their BOM lists the unobtainable SC16C550BIBS.
+
+---
+
 ![mw-cart](/mw-cart.jpg)
 
 This is the cartridge for the MegaWiFi project. It consists of a cartridge for the SEGA Genesis/Megadrive console, along with a WiFi interface, allowing brave programmers to implement games with online gaming, leaderboards, evil DLCs, etc.
@@ -14,7 +51,7 @@ Have a look to the [github project page](https://gitlab.com/doragasu/mw) for mor
 The current cartridge is based on an ESP32-C3 WiFi microcontroller, that has a good specs/price tradeoff. But bear in mind that if needed, it would be easy swapping it for other more powerful ESP32 chip, like for example the ESP32-S3. The current specs are:
 
 * Up to 64 megabits (8 MiB) of flat ROM (no mapper needed!).
-* Fast ESP32 to m68k UART bridge (1.5 Mbps baud rate with hardware flow control).
+* Fast ESP32 to m68k UART bridge (1.5 Mbps baud rate with hardware flow control; 1.25 Mbps on Rev.C).
 * 32-bit RISC-V CPU running at 160 MHz. Can be upgraded to dual core up to 240 MHz if needed.
 * Additional 16 megabits (2 MiB) available of readable/writable memory (managed by the ESP32 and accessed through the UART bridge, could be upgraded to up to 14 MiB if needed!).
 * 400 KiB of SRAM managed by the ESP32.
