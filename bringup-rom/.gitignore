@@ -1,0 +1,7 @@
+*.o
+*.elf
+*.map
+sim/out/
+# release asset, not source (see GitHub releases)
+/mw-revc-bringup.bin
+__pycache__/
