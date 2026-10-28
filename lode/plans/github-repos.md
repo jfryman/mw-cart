@@ -1,7 +1,7 @@
-# Plan: publish Rev.C to GitHub
+# GitHub repos and releases
 
-Decided 2026-10-28 (user): **fork layout, public, release assets for JLC files, docs PDFs,
-bring-up ROM and ESP32 firmware.** Rejected: a wrapper repo with submodules (three repos,
+Rev.C is published as two **public** forks (decided and set up 2026-10-28). Release assets cover the JLC files,
+docs PDFs, the bring-up ROM and the ESP32 firmware. Rejected: a wrapper repo with submodules (three repos,
 submodule friction, and hardware users expect a fork of mw-cart).
 
 ```mermaid
@@ -13,14 +13,25 @@ flowchart LR
 ```
 
 ## Repo contents
-| Workspace item | Destination |
+| Workspace item | Where it lives |
 |---|---|
-| `mw-cart/` KiCad sources (branch `rev-c`) | `jfryman/mw-cart` `main`; upstream `master` pushed as `upstream-master`; upstream tags kept |
+| KiCad sources | `jfryman/mw-cart` `main` (default; the old local `rev-c`). Upstream `master` is on GitHub as `upstream-master`, with tags `Rev.A2`/`Rev.B` |
 | `bringup-rom/`, `tools/` (scripts + `hostbin/`), `lode/` | moved into `mw-cart/`; symlinks left at the workspace root so old paths keep working |
 | `tools/ext/` (313 MB Espressif sparse clone) | git-ignored; recreated by `tools/fetch-ext.sh` (pinned commit `dd76561`) |
-| `mw-fw-rtos/` branch `rev-c` | `lsd.h` change committed; `jfryman/mw-fw-rtos` default branch `rev-c` |
+| `mw-fw-rtos/` | `jfryman/mw-fw-rtos` `rev-c` (default): `d6c5a45` (1.25 Mbaud) + README note `0ac572e` |
 | `build/rev-c/` | not in git; attached to the releases |
 | `Browse/ Doc/ Fab/`, `index.html`, `mega-wifi-*.txt` | stay local (upstream Rev.B KiBot output, re-downloadable) |
+
+## Releases
+| Repo | Tag | Assets |
+|---|---|---|
+| mw-cart | `rev-c-1` (`938222c`) | `mega-wifi-revc-JLCPCB-gerbers.zip`, `_bom_jlc.csv`, `_cpl_jlc.csv`, schematic + assembly PDFs, `mega-wifi-revc-docs.zip` (all of `build/rev-c/Doc` + generic Fab), `mw-revc-bringup.bin` (EC8415F0), `SHA256SUMS` |
+| mw-fw-rtos | `rev-c-1250k` | `mw-fw-rtos-merged.bin`, `mw_fw_rtos_esp32c3-rev-c-1250k.tar.xz` (SHA-256 in the notes) |
+
+To cut the next hardware release: rebuild with `tools/build_outputs.py`, then
+`make` in `bringup-rom/` (Fedora container on macOS). Tag `rev-c-N` on the commit the outputs
+came from, then `gh release create` with the renamed assets and a `SHA256SUMS`. Never upload the
+workspace's top-level `Fab/`, which is Rev.B.
 
 ## Invariants
 - Remotes: `origin` = GitHub (jfryman), `upstream` = GitLab (doragasu) in both clones.

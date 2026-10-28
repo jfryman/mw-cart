@@ -15,5 +15,5 @@
   - [kicad-text-editing.md](build/kicad-text-editing.md) — tools/ helpers and s-expr editing patterns
 - plans/
   - [rev-c.md](plans/rev-c.md) — Rev.C status, pre-order checks, bench validation plan
-  - [github-repos.md](plans/github-repos.md) — GitHub forks, what's in git vs release assets, remotes
+  - [github-repos.md](plans/github-repos.md) — GitHub forks, releases, what's in git vs release assets, remotes; how to cut a release
 - tmp/ — git-ignored session scraps
