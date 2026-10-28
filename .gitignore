@@ -1,0 +1,12 @@
+# KiCad lock/backup files and editor local history
+~*.lck
+*-backups/
+fp-info-cache
+.history/
+.DS_Store
+
+# Large third-party library fetched by tools/fetch-ext.sh
+tools/ext/
+
+# Lode session scraps
+lode/tmp/
