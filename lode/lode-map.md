@@ -10,6 +10,7 @@
 - firmware/
   - [uart-baud-coupling.md](firmware/uart-baud-coupling.md) — UART_CLK/UART_BR and LSD_UART_BR across repos; ESP32-C3 fw container build + flashing
   - [bringup-rom.md](firmware/bringup-rom.md) — Rev.C bring-up test ROM, MAME UART model, m68k toolchain traps
+  - [mw-api.md](firmware/mw-api.md) — what a game ROM can use: SGDK MW config, limits, HTTPS cert caveat, ADS-B data size
 - build/
   - [summary.md](build/summary.md) — KiBot CI vs local kicad-cli pipeline, toolchain, JLC CPL contract
   - [kicad-text-editing.md](build/kicad-text-editing.md) — tools/ helpers and s-expr editing patterns
