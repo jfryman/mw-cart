@@ -1,2 +1,0 @@
-#!/bin/sh
-exec /run/host/lib/ld-linux-aarch64.so.1 --library-path /run/host/usr/lib64 /run/host/usr/bin/magick "$@"

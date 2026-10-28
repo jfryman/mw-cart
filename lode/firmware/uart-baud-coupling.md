@@ -47,11 +47,12 @@ flowchart LR
 sets `LSD_UART_BR` to 1250000 in commit `d6c5a45`. Release `rev-c-1250k` carries the built images. Upstream
 `master` targets the **esp32c3** with ESP-IDF **v5.3.1**, per its `.gitlab-ci.yml`. The old
 ESP8266 code lives on the `esp8266` branch, and the README still describes it.
-The host has no IDF, so the build runs in the official container. Rootless podman needs
-`ignore_chown_errors`, because the AD account has no `/etc/subuid` range:
+The build runs in the official ESP-IDF container, the same on Linux and macOS. `P` is `docker` or
+`podman` (on the old Fedora box, rootless podman needed `--storage-opt ignore_chown_errors=true`
+because the AD account had no `/etc/subuid` range). `:Z` is harmless on Docker Desktop for macOS:
 
 ```bash
-P="podman --storage-opt ignore_chown_errors=true"
+P=podman   # or docker
 cd mw-fw-rtos
 $P run --rm -v "$PWD":/project:Z -w /project docker.io/espressif/idf:v5.3.1 \
   bash -c 'idf.py set-target esp32c3 && idf.py build'
@@ -65,10 +66,11 @@ partition table at 0x8000, otadata at 0xe000 and the app at 0x10000 (DIO, 80 MHz
 plus `mw-fw-rtos-merged.bin`. The merged image flashes in one step:
 
 ```bash
-esptool.py --chip esp32c3 -p /dev/ttyACM0 write_flash 0x0 mw-fw-rtos-merged.bin
+esptool.py --chip esp32c3 -p /dev/ttyACM0 write_flash 0x0 mw-fw-rtos-merged.bin   # Linux
+esptool.py --chip esp32c3 -p /dev/cu.usbmodem101 write_flash 0x0 mw-fw-rtos-merged.bin   # macOS
 ```
 
-On macOS the port is `/dev/cu.usbmodem*`. A blank ESP32-C3-WROOM-02 (as JLC fits it) boot-loops
+esptool comes from pip (`pip install esptool`, in a venv) on either OS. A blank ESP32-C3-WROOM-02 (as JLC fits it) boot-loops
 and re-enumerates on USB every ~2.6 s, so the port keeps disappearing. esptool still catches it with
 `--before usb-reset` (retry if the first open races a re-enumeration).
 

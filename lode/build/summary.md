@@ -4,33 +4,41 @@
 | Pipeline | Where it runs | Produces | Used for |
 |---|---|---|---|
 | Upstream KiBot CI | GitLab, `ghcr.io/inti-cmnb/kicad8_auto`, tags only | full `Kibot/` tree → 7z → package registry | the top-level `Browse/ Doc/ Fab/` here (tag Rev.B) |
-| Local kicad-cli | this machine, KiCad 10 flatpak | `build/<branch>/Doc,Fab` subset | branch builds such as `build/rev-c/` |
+| Local kicad-cli | Linux or macOS, any KiCad 10 install | `build/<branch>/Doc,Fab` subset | release assets such as `build/rev-c/` |
 
 ```mermaid
 flowchart LR
   SRC[mw-cart/*.kicad_*] -->|tag push| CI[.gitlab-ci.yml → kibot -g variant=default]
   CI --> PKG[mega_wifi_TAG.7z in GitLab packages]
-  SRC -->|local| BO[tools/build_outputs.py → tools/kc → kicad-cli]
+  SRC -->|local| BO[tools/build_outputs.py → kicad-cli]
   BO --> OUT[build/rev-c/Doc + Fab + mega-wifi-JLCPCB.zip]
 ```
 
-## Local toolchain (this ARM Fedora/Asahi box)
-- `flatpak install --user flathub org.kicad.KiCad`: KiCad 10.0.6, with the Footprints and
-  Packages3D extensions (3D models at `/app/extensions/Library/3dmodels` inside the sandbox).
-- `tools/kc`: wrapper that runs `kicad-cli` in the flatpak with `/tmp` and `~/Desktop` mounted.
-- The Espressif ESP32 3D model comes from a sparse clone in `tools/ext/espressif-kicad`.
-  It is exposed as `tools/ext/3rdparty/3dmodels/com_github_espressif_kicad-libraries` to
-  match the `${KICAD8_3RD_PARTY}` path stored in the PCB.
-- Podman can't run the KiBot image here: no `/etc/subuid` range for the domain user, and
-  the image is amd64 only.
+## Local toolchain (Linux or macOS, never Windows)
+`build_outputs.py`, `tools/kc` (kicad-cli) and `tools/kipy` (Python with `pcbnew`) find KiCad
+in the same order, so one command works everywhere:
+
+| Order | kicad-cli | 3D library default (`KICAD8_3DMODEL_DIR`) |
+|---|---|---|
+| 1 | `$KICAD_CLI` | — |
+| 2 | `kicad-cli` on PATH (Arch/Omarchy `pacman -S kicad kicad-library-3d`, Homebrew) | `/usr/share/kicad/3dmodels`, or the `.app`'s `SharedSupport/3dmodels` if PATH points into KiCad.app |
+| 3 | `/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli` | `KiCad.app/Contents/SharedSupport/3dmodels` |
+| 4 | flatpak `org.kicad.KiCad` | `/app/extensions/Library/3dmodels` |
+
+`KICAD8_3RD_PARTY` defaults to `tools/ext/3rdparty`, which `tools/fetch-ext.sh` creates: a sparse
+Espressif clone pinned at `dd76561`, linked as `3dmodels/com_github_espressif_kicad-libraries`
+to match the path stored in the PCB. If the 3D library directory is missing, STEP and renders are skipped.
 
 ```bash
 cd mw-cart                     # repo root
-tools/fetch-ext.sh             # once: Espressif 3D models, pinned dd76561
-KICAD8_3DMODEL_DIR=/app/extensions/Library/3dmodels \
-KICAD8_3RD_PARTY=$PWD/tools/ext/3rdparty \
-python3 -I tools/build_outputs.py . ../build/rev-c
+tools/fetch-ext.sh             # once
+python3 -I tools/build_outputs.py . ../build/rev-c   # wipes the output dir first
 ```
+
+**Cross-platform parity (verified 2026-10-28):** the macOS build (KiCad.app 10.0.6) of the
+`rev-c-1` sources matches the Fedora flatpak build (10.0.6) that the release assets came from.
+The file list, JLC BOM/CPL and generic BOM/positions are byte-identical, the Gerbers and drills
+are identical apart from date lines, and the STEP is the same size and includes the ESP32 model.
 
 ## What `build_outputs.py` makes (mirrors KiBot names)
 - `Doc/Schematic/mega-wifi-schematic.pdf`, `Doc/Export/{netlist.net, IPC-D-356.d356}`
@@ -45,32 +53,12 @@ python3 -I tools/build_outputs.py . ../build/rev-c
 Not produced: `Browse/` HTML, interactive HTML BOM, positional/xlsx BOMs, boardview `.brd`,
 VRML, and the PCBWay/Elecrow/FusionPCB packs. Those need KiBot itself.
 
-## Running KiBot locally (partially working)
-KiBot 1.9.1 runs inside the KiCad flatpak's Python 3.14. The upstream config generates
-the BOMs, gerbers, drills, JLCPCB/Elecrow/PCBWay/FusionPCB packs and netlists, but three
-outputs block a full run:
-- `basic_info` hangs in `kibot-check`. Skip it with `-i basic_info`.
-- `basic_pcb_print_pdf` (`pcb_print`) hangs because it drives the KiCad GUI. Skip it.
-- The `pcbdraw` PNG outputs exhausted RAM through the `tools/hostbin/rsvg-convert` shim
-  (ImageMagick). The run was killed by Claude Code's low-memory reaper. Install real
-  `librsvg2-tools` on the host, or skip `basic_pcbdraw_png_*`.
-
-```bash
-# one-time: pip install into a target dir (not byte-compiled), expose host gs/magick
-flatpak run --command=sh org.kicad.KiCad -c "python3 -m pip install --target $KPY kibot InteractiveHtmlBom kiauto"
-find $KPY/kibot -name __pycache__ -exec rm -rf {} + ; cp $KPY/bin/kibot-check $KPY/kibot/
-# run (in a scratch copy of the project, never in mw-cart/)
-flatpak run --filesystem=host-os --filesystem=$HOME/Desktop --filesystem=$KPY \
-  --env=PYTHONDONTWRITEBYTECODE=1 --env=KICAD8_3DMODEL_DIR=/app/extensions/Library/3dmodels \
-  --env=KICAD8_3RD_PARTY=$W/tools/ext/3rdparty --command=sh org.kicad.KiCad -c \
-  "PYTHONPATH=$KPY PATH=$W/tools/hostbin:$KPY/bin:\$PATH python3 -m kibot -c mega_wifi.kibot.yaml \
-   -g variant=default -i basic_info basic_pcb_print_pdf"
-```
-`tools/hostbin/` holds shims that run host `gs`/`magick`/`convert`/`identify` through
-`/run/host/lib/ld-linux-aarch64.so.1 --library-path /run/host/usr/lib64` (needs
-`--filesystem=host-os`). The KiBot install lived in the session scratchpad and is gone,
-so reinstall it to use it. The surest way to get the full upstream tree is still a tag
-on a GitLab fork, so the upstream CI runs.
+## Full KiBot output
+The local pipeline doesn't run KiBot. Upstream's image `ghcr.io/inti-cmnb/kicad8_auto` is amd64 only:
+it should run under Docker or Podman on an x86_64 Linux box, and only under emulation on Apple
+silicon (untested both ways). The upstream config's slow or blocking outputs are `basic_info`
+(hangs in `kibot-check`), `basic_pcb_print_pdf` (drives the GUI) and the `pcbdraw` PNGs (RAM
+heavy); skip them with `-i`. The surest full tree is still a tag on a GitLab fork, so upstream CI runs.
 
 ## JLC CPL contract
 - Coordinates are relative to the aux origin `(104.14, 130.175)`, with Y flipped (the pos
@@ -82,8 +70,8 @@ on a GitLab fork, so the upstream CI runs.
 - Regression check: diff against the Rev.B CPL. The only differences should be U7, Y1 and R18.
 
 ## Lessons
-- KiCad 10 `pcb render`/`step` resolve `${KICAD8_3DMODEL_DIR}` only when it's passed in
-  explicitly (`flatpak --env=`).
+- KiCad 10 `pcb render`/`step` resolve `${KICAD8_3DMODEL_DIR}` only when it's set explicitly.
+  KiCad 10 only predefines `KICAD10_*`, which is why `build_outputs.py` always sets the KICAD8 names.
 - The `.wrl` paths in the PCB still render; `step --subst-models` swaps in `.step` files.
 
 Related: [kicad-text-editing.md](kicad-text-editing.md), [../practices.md](../practices.md).

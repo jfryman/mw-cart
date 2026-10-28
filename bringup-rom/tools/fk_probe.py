@@ -3,7 +3,10 @@
 usage: fk_probe.py [/dev/cu.usbserial-XXXX]   (needs pyserial)"""
 import serial,sys
 CMD_ADDR,CMD_LEN,CMD_RD,CMD_WR=0,1,2,3; INC,SINGLE,MODE8=128,64,16
-p=serial.Serial(sys.argv[1] if len(sys.argv)>1 else '/dev/cu.usbserial-A10MQJP4',timeout=2)
+import glob
+ports=sys.argv[1:] or sorted(glob.glob('/dev/cu.usbserial*')+glob.glob('/dev/ttyUSB*'))
+if not ports: sys.exit('no FlashKit found (expected /dev/cu.usbserial* or /dev/ttyUSB*); pass the port')
+p=serial.Serial(ports[0],timeout=2)
 def addr(a):
     a//=2; return bytes([CMD_ADDR,(a>>16)&255,CMD_ADDR,(a>>8)&255,CMD_ADDR,a&255])
 def rd(a,n):

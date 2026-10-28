@@ -4,4 +4,5 @@
 sim/out/
 # release asset, not source (see GitHub releases)
 /mw-revc-bringup.bin
+sim/hi.bin
 __pycache__/

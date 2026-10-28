@@ -36,12 +36,23 @@ The firmware on the ESP32 must be MegaWiFi `mw-fw-rtos` with `LSD_UART_BR 125000
 
 ## Flashing (FlashKit MD)
 
+Use [flashkit-md](https://github.com/jfryman/flashkit-md-dotnet) **v1.10.5 or later**. Older
+versions also probe `/dev/cu.usbmodem*` / `ttyACM*`, and grab the cart's ESP32 if its USB-C is plugged in.
+
 ```sh
-alias fk='flatpak run --command=flashkit-md io.github.jfryman.FlashKitMD'
-fk info
-fk read-rom --trust-header cart-backup.bin   # write-rom erases the flash
-fk write-rom mw-revc-bringup.bin             # no --full-erase: the chip is 8 MB, not 4 MB
+flashkit-md info
+flashkit-md read-rom --trust-header cart-backup.bin   # write-rom erases the flash
+flashkit-md write-rom mw-revc-bringup.bin             # no --full-erase on old (<1.11) versions
 ```
+
+| | macOS | Linux |
+|---|---|---|
+| FlashKit MD (FTDI) | `/dev/cu.usbserial-*` | `/dev/ttyUSB*` |
+| cart USB-C (ESP32) | `/dev/cu.usbmodem*` | `/dev/ttyACM*` |
+| permissions | none needed | user in `uucp` (Arch/Omarchy) or `dialout` (Fedora/Debian) |
+
+`tools/fk_probe.py` gives a read-only check of a new cart: raw reads, CFI and the flash ID.
+It needs pyserial (`pip install pyserial`) and finds the FlashKit on either OS.
 
 ### Running it on a Rev.B cart (NXP UART, 24 MHz, stock firmware)
 Tests 1–5 PASS. Test 6 FAILs at ~24.00 MHz (expected). Tests 7–8 PASS, because divisor 1
@@ -66,19 +77,15 @@ With a Mega-CD attached and R1 fitted, test 9 is also the check for the
 
 ## Build
 
-```sh
-sudo dnf install gcc-m68k-linux-gnu binutils-m68k-linux-gnu   # Fedora
-make
-```
-
-On macOS, build and simulate in a Fedora container (`docker build -t mw-m68k:fedora42 -`
-with `FROM fedora:42` / `RUN dnf -y install gcc-m68k-linux-gnu binutils-m68k-linux-gnu make mame`):
+Works the same on Linux and macOS through a container (Podman or Docker). `container.sh` builds
+the image from `Containerfile` (Fedora 42: `gcc-m68k-linux-gnu`, MAME) on first use:
 
 ```sh
-docker run --rm -v "$PWD":/w -w /w mw-m68k:fedora42 make
-docker run --rm -v "$PWD":/w -w /w -e SDL_VIDEODRIVER=dummy -e SDL_AUDIODRIVER=dummy \
-  -e XDG_RUNTIME_DIR=/tmp mw-m68k:fedora42 sim/run.sh none 16
+./container.sh make clean && ./container.sh make      # always clean for a release image
 ```
+
+On Fedora you can also build natively: `sudo dnf install gcc-m68k-linux-gnu binutils-m68k-linux-gnu`,
+then `make`. Other distros' m68k cross compilers are untested; use the container.
 
 `make` also runs `check`, which rejects any 68020+ instruction in the image.
 
@@ -96,12 +103,14 @@ loopback, divisor-accurate byte timing, LSR/MSR, auto-RTS) plus a fake ESP32
 that answers VERSION and ECHO. MAME runs the ROM headless against it:
 
 ```sh
-sudo dnf install mame
+./container.sh sim/run.sh none 6,20   # or natively on Fedora (dnf install mame): sim/run.sh ...
 sim/run.sh none 6,20      # all tests pass; snapshots in sim/out/snap/genesis/
 sim/run.sh noesp 8        # test 7 must FAIL with the firmware hint
 sim/run.sh corrupt 12     # test 8 must count mismatches
 # test 9: SIM_CART = 8 MiB image from fk_hiflash.py image; SIM_HI = image served at
 # $400000+ (models the R1 hack; MAME maps a plain cart below 4 MiB only)
+python3 tools/fk_hiflash.py image mw-revc-bringup.bin sim/hi.bin
+SIM_CART=sim/hi.bin SIM_HI=sim/hi.bin ./container.sh sim/run.sh none 16   # paths relative to bringup-rom/
 SIM_CART=hi.bin SIM_HI=hi.bin sim/run.sh none 16   # test 9 PASS L6 H7
 SIM_CART=hi.bin sim/run.sh none 16                 # test 9 FAIL "R2? no 8MiB map"
 ```

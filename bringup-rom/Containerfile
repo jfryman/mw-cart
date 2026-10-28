@@ -1,0 +1,4 @@
+# Build + simulation environment for the bring-up ROM (m68k gcc, MAME).
+# Used by ./container.sh; works with Docker or Podman, on Linux (x86_64/arm64) and macOS.
+FROM docker.io/library/fedora:42
+RUN dnf -y install gcc-m68k-linux-gnu binutils-m68k-linux-gnu make mame && dnf clean all

@@ -22,4 +22,5 @@
 - LCSC# / manf# - BOM fields: JLCPCB/LCSC part code and manufacturer part number
 - Basic / Extended part - JLCPCB assembly library tiers (extended = setup fee per part type)
 - Global Sourcing - JLCPCB parts manager route for parts JLC doesn't stock
-- kc - `tools/kc`, wrapper running `kicad-cli` from the KiCad flatpak
+- kc - `tools/kc`, wrapper that finds and runs `kicad-cli` (PATH, KiCad.app or flatpak)
+- kipy - `tools/kipy`, wrapper that runs a Python able to `import pcbnew`

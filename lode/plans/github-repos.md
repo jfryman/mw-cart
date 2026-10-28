@@ -16,7 +16,7 @@ flowchart LR
 | Workspace item | Where it lives |
 |---|---|
 | KiCad sources | `jfryman/mw-cart` `main` (default; the old local `rev-c`). Upstream `master` is on GitHub as `upstream-master`, with tags `Rev.A2`/`Rev.B` |
-| `bringup-rom/`, `tools/` (scripts + `hostbin/`), `lode/` | moved into `mw-cart/`; symlinks left at the workspace root so old paths keep working |
+| `bringup-rom/`, `tools/`, `lode/` | moved into `mw-cart/`; symlinks left at the workspace root so old paths keep working |
 | `tools/ext/` (313 MB Espressif sparse clone) | git-ignored; recreated by `tools/fetch-ext.sh` (pinned commit `dd76561`) |
 | `mw-fw-rtos/` | `jfryman/mw-fw-rtos` `rev-c` (default): `d6c5a45` (1.25 Mbaud) + README note `0ac572e` |
 | `build/rev-c/` | not in git; attached to the releases |
@@ -29,7 +29,7 @@ flowchart LR
 | mw-fw-rtos | `rev-c-1250k` | `mw-fw-rtos-merged.bin`, `mw_fw_rtos_esp32c3-rev-c-1250k.tar.xz` (SHA-256 in the notes) |
 
 To cut the next hardware release: rebuild with `tools/build_outputs.py`, then
-`make` in `bringup-rom/` (Fedora container on macOS). Tag `rev-c-N` on the commit the outputs
+`./container.sh make clean && ./container.sh make` in `bringup-rom/`. Tag `rev-c-N` on the commit the outputs
 came from, then `gh release create` with the renamed assets and a `SHA256SUMS`. Never upload the
 workspace's top-level `Fab/`, which is Rev.B.
 

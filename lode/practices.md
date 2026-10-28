@@ -8,9 +8,22 @@
   built from the tagged commit ([plans/github-repos.md](plans/github-repos.md)).
 - Before pushing, scan the files you're adding for personal paths, hostnames and secrets: the repos are public.
 
+## Platforms: Linux and macOS, never Windows
+The user works on either **Omarchy (Arch Linux)** or **macOS (Apple silicon)**, and older notes come
+from a Fedora/Asahi box. Everything in the repo must run on both:
+- Find tools by lookup order, never by hard-coded path: env override → PATH → KiCad.app →
+  flatpak (`tools/kc`, `tools/kipy`, `build_outputs.py`).
+- Cross toolchains run in containers that work with **Podman or Docker**
+  (`bringup-rom/container.sh`, the ESP-IDF image). Don't depend on a distro package that only one OS has.
+- Scripts are POSIX `sh` or Python 3. Avoid GNU-only and BSD-only flags (`sed -i`, `truncate`,
+  `readlink -f`) outside containers.
+- Serial ports: FlashKit is `/dev/cu.usbserial-*` (macOS) or `/dev/ttyUSB*` (Linux); the cart's ESP32 is
+  `/dev/cu.usbmodem*` or `/dev/ttyACM*`. Linux needs the user in `uucp` (Arch) or `dialout`.
+- zsh (macOS default) doesn't word-split unquoted `$var`; write scripts for `sh`.
+
 ## Keep sources in KiCad 8 format
-Upstream CI uses `ghcr.io/inti-cmnb/kicad8_auto`. The local machine only has KiCad 10
-(flatpak). Opening and saving in the KiCad 10 GUI or `pcbnew.SaveBoard` would upgrade the
+Upstream CI uses `ghcr.io/inti-cmnb/kicad8_auto`. Local machines have KiCad 10 (KiCad.app,
+pacman or flatpak). Opening and saving in the KiCad 10 GUI or `pcbnew.SaveBoard` would upgrade the
 file format and break the upstream CI. So:
 - Edit `.kicad_sch`/`.kicad_pcb` **as text** (Python, s-expr aware), never via a KiCad 10 save.
 - Use KiCad 10 only for read-only work: `kicad-cli` ERC/DRC/exports, and zone filling
@@ -26,9 +39,8 @@ Fills are stored in the PCB file and KiBot does **not** refill them. After any c
 change, refill and transplant (see [build/kicad-text-editing.md](build/kicad-text-editing.md)):
 
 ```bash
-flatpak run --filesystem=/tmp --filesystem=$HOME/Desktop --command=python3 org.kicad.KiCad \
-  tools/fill.py $PWD/mw-cart/mega-wifi.kicad_pcb /tmp/filled.kicad_pcb
-python3 -I tools/transplant.py mw-cart/mega-wifi.kicad_pcb /tmp/filled.kicad_pcb
+tools/kipy tools/fill.py $PWD/mega-wifi.kicad_pcb /tmp/filled.kicad_pcb   # repo root
+python3 -I tools/transplant.py mega-wifi.kicad_pcb /tmp/filled.kicad_pcb
 ```
 
 ## Verification gate (run after every hardware edit)

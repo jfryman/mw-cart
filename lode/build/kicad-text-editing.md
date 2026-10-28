@@ -9,10 +9,10 @@ KiCad 10 `kicad-cli`.
 |---|---|
 | `sexp.py` | minimal s-expr parser + `pads(board)` → absolute pad coords/nets (handles footprint rotation) |
 | `render.py` | `python3 -I render.py tools pcb out.svg X0 Y0 X1 Y1` → close-up SVG of F.Cu pads/tracks/vias/fills (rasterize with `magick`) |
-| `fill.py` | runs **inside the flatpak**: load board, `ZONE_FILLER.Fill`, save to a scratch path (KiCad 10 format) |
+| `fill.py` | runs under `tools/kipy` (KiCad's Python with `pcbnew`): load board, `ZONE_FILLER.Fill`, save to a scratch path (KiCad 10 format) |
 | `transplant.py` | copies `filled_polygon` blocks from the scratch board back into the KiCad 8 source, matched by zone uuid |
 | `apply_tl16c550d.py` | the one-shot U7 swap edit (kept as a worked example; do not re-run on the edited tree) |
-| `kc` | `kicad-cli` wrapper |
+| `kc` / `kipy` | `kicad-cli` / KiCad-Python wrappers; same lookup on Linux and macOS ([summary.md](summary.md)) |
 
 ## Patterns that worked
 ```python
@@ -38,7 +38,7 @@ pcb = pcb[:i] + fix(pcb[i:j]) + pcb[j:]
 ```mermaid
 sequenceDiagram
   participant Py as python text edit
-  participant K10 as KiCad10 (flatpak)
+  participant K10 as KiCad10 (kc / kipy)
   Py->>Py: edit .kicad_sch / .kicad_pcb (KiCad 8 syntax)
   Py->>K10: fill.py on source → scratch board
   K10-->>Py: filled scratch (v10 format)

@@ -60,23 +60,26 @@ flowchart TD
   opcodes. Note that objdump in 68000 mode shows `0x61FF` as `bsrs`, so match on the hex.
 
 ## Flashing
-The user's programmer is FlashKit MD (their own `flashkit-md-dotnet`; on macOS the CLI is
-`artifacts/osx-arm64/flashkit-md` in that repo, on Fedora the flatpak `io.github.jfryman.FlashKitMD`).
+The user's programmer is FlashKit MD, driven by their own `flashkit-md-dotnet` (≥ v1.10.5). It has per-OS
+binaries in that repo's `artifacts/<rid>/` (`osx-arm64`, `linux-x64`, …), plus a flatpak `io.github.jfryman.FlashKitMD`.
 Back up first, then flash:
 ```sh
-flatpak run --command=flashkit-md io.github.jfryman.FlashKitMD read-rom --trust-header backup.bin
-flatpak run --command=flashkit-md io.github.jfryman.FlashKitMD write-rom bringup-rom/mw-revc-bringup.bin
+flashkit-md read-rom --trust-header backup.bin
+flashkit-md write-rom bringup-rom/mw-revc-bringup.bin
 ```
 Don't use `--full-erase`: it assumes a 4 MB chip, and the cart's S29GL064N is 8 MB. Don't
 use `--no-flash-check`: the S29GL064N supports CFI, so a failed check means a real problem.
 The ROM also runs on a Rev.B cart as a real-hardware check of the ROM itself. Expect tests
 1–5 PASS, test 6 FAIL at ~24.00 MHz, and tests 7–8 PASS (24 MHz/16 = 1.5 Mbaud = stock firmware).
 
-## Build on macOS
-There is no m68k gcc on the Mac. Build and simulate in a Fedora 42 container (`mw-m68k:fedora42`,
-which has `gcc-m68k-linux-gnu binutils-m68k-linux-gnu make mame`). MAME in a container needs
-`SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy XDG_RUNTIME_DIR=/tmp`. The exact commands are in
-`bringup-rom/README.md`. GCC 15 flags constant pointers below 4 KiB as null (`-Warray-bounds`), so
+## Build (Linux or macOS)
+`bringup-rom/container.sh <cmd>` runs any command in the Fedora 42 image built from `bringup-rom/Containerfile`
+(`gcc-m68k-linux-gnu`, MAME 0.287; tag `mw-bringup-rom:fedora42`). It prefers podman (`:Z`,
+`--userns=keep-id`) and falls back to docker (`--user uid:gid`), so build products stay user-owned. It
+sets the headless SDL env MAME needs and forwards `SIM_*`. Native `make` works only on Fedora.
+**Release builds must be `make clean && make`.** `rev-c-1`'s ROM (`EC8415F0`) was linked with
+stale `boot/vdp/font/lib68k.o` from the Fedora box's older gcc. A clean gcc 15.2.1 build of the
+same source is `00DFED58`; it behaves the same in the sim (all paths), but isn't the build bench-tested on board 1. GCC 15 flags constant pointers below 4 KiB as null (`-Warray-bounds`), so
 `main.c` passes `$000100` through an empty `asm` to hide the constant.
 
 ## Simulation

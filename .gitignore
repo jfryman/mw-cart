@@ -10,3 +10,6 @@ tools/ext/
 
 # Lode session scraps
 lode/tmp/
+
+# Per-user KiCad project state (created by kicad-cli/GUI runs)
+*.kicad_prl

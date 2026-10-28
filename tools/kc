@@ -1,2 +1,12 @@
 #!/bin/sh
-exec flatpak run --filesystem=/tmp --filesystem=$HOME/Desktop --command=kicad-cli org.kicad.KiCad "$@"
+# Run kicad-cli on Linux or macOS. Same lookup order as build_outputs.py:
+# $KICAD_CLI, kicad-cli on PATH, KiCad.app, then the org.kicad.KiCad flatpak.
+if [ -n "$KICAD_CLI" ]; then exec "$KICAD_CLI" "$@"; fi
+if command -v kicad-cli >/dev/null 2>&1; then exec kicad-cli "$@"; fi
+app=/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli
+if [ -x "$app" ]; then exec "$app" "$@"; fi
+if command -v flatpak >/dev/null 2>&1 && flatpak info org.kicad.KiCad >/dev/null 2>&1; then
+	exec flatpak run --filesystem=host --command=kicad-cli org.kicad.KiCad "$@"
+fi
+echo "kc: kicad-cli not found (pacman -S kicad / brew install --cask kicad / flatpak org.kicad.KiCad)" >&2
+exit 127

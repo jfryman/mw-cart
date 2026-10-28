@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-"""Rebuild mw-cart fabrication + documentation assets with kicad-cli (KiCad flatpak).
+"""Rebuild mw-cart fabrication + documentation assets with kicad-cli (KiCad 8+).
 
 Mirrors the layout of the upstream KiBot output (Doc/, Fab/) for the parts that
 kicad-cli can produce.  KiBot-only extras (Browse/ HTML, iBoM, boardview) are not made.
+Runs on Linux and macOS (not Windows).
 
-Usage: python3 -I tools/build_outputs.py <mw-cart dir> <output dir>
-Env:   KICAD8_3DMODEL_DIR / KICAD8_3RD_PARTY are forwarded into the flatpak if set; 3D outputs
-       (STEP, renders) are only built when KICAD8_3DMODEL_DIR is set.  Typical:
-         KICAD8_3DMODEL_DIR=/app/extensions/Library/3dmodels \
-         KICAD8_3RD_PARTY=$PWD/tools/ext/3rdparty python3 -I tools/build_outputs.py mw-cart build/rev-c
+Usage: python3 -I tools/build_outputs.py <mw-cart dir> <output dir>   (output dir is wiped)
+
+kicad-cli is found in this order: $KICAD_CLI, `kicad-cli` on PATH (Arch/Omarchy `kicad`
+package, Homebrew), /Applications/KiCad/KiCad.app, then the org.kicad.KiCad flatpak.
+The PCB references ${KICAD8_3DMODEL_DIR} and ${KICAD8_3RD_PARTY}. Both default sensibly:
+the stock 3D library of whichever KiCad was found, and tools/ext/3rdparty (run
+tools/fetch-ext.sh once). Override either with the environment variable. STEP and renders
+are skipped if the 3D library directory doesn't exist.
 """
 import csv, io, os, re, shutil, subprocess, sys, zipfile
 
@@ -18,18 +22,51 @@ PCB, SCH = f"{SRC}/{NAME}.kicad_pcb", f"{SRC}/{NAME}.kicad_sch"
 LAYERS = ["F.Cu", "B.Cu", "F.Paste", "F.Silkscreen", "F.Mask", "B.Mask", "Edge.Cuts", "F.Fab"]
 # KiBot JLCPCB rotation fixes (regex on footprint name -> degrees added), as seen in Rev.B CPL
 JLC_ROT = [(r"^SOT-223", 180), (r"^SOT-23", 180), (r"^TSSOP-", -90)]
+MAC_APP = "/Applications/KiCad/KiCad.app/Contents"
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def find_kicad():
+    """(argv prefix for kicad-cli, default 3D model dir, is_flatpak)"""
+    cli = os.environ.get("KICAD_CLI") or shutil.which("kicad-cli")
+    if not cli and os.path.exists(f"{MAC_APP}/MacOS/kicad-cli"):
+        cli = f"{MAC_APP}/MacOS/kicad-cli"
+    if cli:
+        real = os.path.realpath(cli)
+        if ".app/Contents/" in real:
+            models = real.split(".app/Contents/")[0] + ".app/Contents/SharedSupport/3dmodels"
+        else:
+            models = next((m for m in ("/usr/share/kicad/3dmodels", "/usr/local/share/kicad/3dmodels")
+                           if os.path.isdir(m)), "/usr/share/kicad/3dmodels")
+        return [cli], models, False
+    if shutil.which("flatpak") and subprocess.run(["flatpak", "info", "org.kicad.KiCad"],
+                                                  capture_output=True).returncode == 0:
+        return ["flatpak", "run", "--command=kicad-cli", "org.kicad.KiCad"], "/app/extensions/Library/3dmodels", True
+    sys.exit("kicad-cli not found: install KiCad (pacman -S kicad / brew install --cask kicad / "
+             "flatpak org.kicad.KiCad) or set KICAD_CLI")
+
+
+KICAD, MODELS_DEFAULT, FLATPAK = find_kicad()
+ENV = {
+    "KICAD8_3DMODEL_DIR": os.environ.get("KICAD8_3DMODEL_DIR") or MODELS_DEFAULT,
+    "KICAD8_3RD_PARTY": os.environ.get("KICAD8_3RD_PARTY") or os.path.join(HERE, "ext", "3rdparty"),
+}
+HAVE_3D = FLATPAK or os.path.isdir(ENV["KICAD8_3DMODEL_DIR"])
 
 
 def kc(*args):
-    env = []
-    for var in ("KICAD8_3DMODEL_DIR", "KICAD8_3RD_PARTY"):
-        if os.environ.get(var):
-            env.append(f"--env={var}={os.environ[var]}")
-            if not os.environ[var].startswith("/app/"):
-                env.append(f"--filesystem={os.environ[var]}:ro")
-    cmd = ["flatpak", "run", f"--filesystem={SRC}", f"--filesystem={OUT}", *env,
-           "--command=kicad-cli", "org.kicad.KiCad", *args]
-    r = subprocess.run(cmd, capture_output=True, text=True)
+    if FLATPAK:
+        extra = [f"--filesystem={SRC}", f"--filesystem={OUT}"]
+        for k, v in ENV.items():
+            extra.append(f"--env={k}={v}")
+            if not v.startswith("/app/"):
+                extra.append(f"--filesystem={v}:ro")
+        cmd = KICAD[:2] + extra + KICAD[2:] + list(args)
+        env = None
+    else:
+        cmd = KICAD + list(args)
+        env = {**os.environ, **ENV}
+    r = subprocess.run(cmd, capture_output=True, text=True, env=env)
     if r.returncode:
         sys.exit(f"kicad-cli failed: {' '.join(args)}\n{r.stdout}\n{r.stderr}")
     return r.stdout
@@ -69,7 +106,7 @@ def main():
            "--mode-single", "-o", f"{d('Doc', 'PCB', 'PDF')}/{NAME}-{ly.replace('.', '_')}.pdf", PCB)
     kc("pcb", "export", "pdf", "-l", "F.Fab,F.Silkscreen,Edge.Cuts", "--mode-single", "--ibt",
        "-o", f"{d('Doc', 'PCB', 'PDF')}/{NAME}-assembly.pdf", PCB)
-    if os.environ.get("KICAD8_3DMODEL_DIR"):
+    if HAVE_3D:
         kc("pcb", "export", "step", "--subst-models", "-f", "-o", f"{d('Doc', '3D')}/{NAME}-3D.step", PCB)
         for side in ("top", "bottom"):
             kc("pcb", "render", "--side", side, "--quality", "high", "-w", "1600", "--height", "1000",
